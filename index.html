@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathe</title>
+
+    <!-- g-fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- custom-css -->
+    <link rel="stylesheet" href="style.css">
+    <!-- custom-js -->
+    <script src="index.js"></script>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="container">
+        <!-- <div class="header">
+            <h1>MATHE</h4>
+            <p>Simple Math</p>
+        </div>
+        <div class="card">
+            <h1 class="card__header">
+                <span class="card_title">Prime Finder</span>
+                <a class="btn pulse" href="?v=primefinder">></a>
+            </h1>
+            <p class="card__description">Find all Prime Bumbers in a certain range.</p>
+            <p class="card__example"></p>
+        </div>
+        <div class="card">
+            <h1 class="card__header">
+                <span class="card_title">Prime Factor</span>
+                <a class="btn pulse" href="?v=primefinder">></a>
+            </h1>
+            <p class="card__description">Find all Prime Factors of a certain number</p>
+            <p class="card__example"></p>
+        </div>
+        <div class="card">
+            <h1 class="card__header">
+                <span class="card_title">Full Square</span>
+                <a class="btn pulse" href="?v=primefinder">></a>
+            </h1>
+            <p class="card__description">Find all full square number in a certain range</p>
+            <p class="card__example"></p>
+        </div> -->
+        <div class="header">
+            <h1>Primefinder</h4>
+        </div>
+        <div class="card card--searchbox">
+            <span class="form-group">
+                <span>Start</span>
+                <input class="form-field" type="number" placeholder="1" value="1">
+            </span>
+            <span class="form-group">
+                <span>End</span>
+                <input class="form-field" type="number" placeholder="100" value="100">
+            </span>
+            <button type="submit" class="btn">Go</button>
+        </div>
+        <div class="card">
+            <h1 class="card__header">
+                <span class="card_title">Summary</span>
+            </h1>
+            <div class="card__body">
+                <span class="form-group">
+                    <span>Total Numbers</span>
+                    <input disabled class="form-field" type="text" placeholder="100" value="100">
+                </span>
+                <span class="form-group">
+                    <span>Prime Numbers</span>
+                    <input disabled class="form-field" type="text" placeholder="100" value="100">
+                </span>
+                <span class="form-group">
+                    <span>Non Prime Number</span>
+                    <input disabled class="form-field" type="text" placeholder="100" value="100">
+                </span>
+            </div>
+        </div>
+        <div class="card">
+            <h1 class="card__header">
+                <span class="card_title">Result</span>
+            </h1>
+            <div class="card_result">
+                <span>1</span>
+                <span>2</span>
+                <span>23</span>
+                <span data-x>4</span>
+                <span>6</span>
+                <span>7</span>
+                <span data-x>9</span>
+                <span>7</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
