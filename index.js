@@ -176,7 +176,113 @@ class PrimeFinder extends CalculatePrime {
         start_number_el.value = this.start;
         end_number_el.value = this.end;
     }
+}
 
+class FullSquare extends InputValidation {
+    constructor(inp) {
+        super(inp);
+
+        this.all_squares = JSON.parse(localStorage.getItem('all_squares')) || [];
+        this.needed_squares = []; // total full squares numbers' list
+        this.total_nums = 0; // total numbers
+
+        let [start, end, step] = this.input;
+
+        FullSquare.calculate_squares(this.all_squares, end);
+    }
+
+    static calculate_squares(all_squares, end) {
+        // if already caculated
+        if (all_squares[all_squares.length - 1] >= end) return;
+
+        let i = all_squares.length ? Math.sqrt(all_squares[all_squares.length - 1]) + 1 : 1; //starting number == 1 if array is empty else, lastElement+1
+        while (i * i <= end) {
+            all_squares.push(i * i);
+            i++;
+        }
+
+        localStorage.setItem('all_squares', JSON.stringify(all_squares));
+    }
+
+    updateDom(main_list_el, summary_el, start_number_el, end_number_el) {
+
+        let new_array = this.all_squares.slice();
+        //copying array for efficiency 
+
+        // delete those primes which are less than starting number
+        // terminating "i > new_array[0]" condition
+        while (true) {
+            if (!new_array.length || new_array[0] >= this.input[0]) break;
+            // break if array is empty OR array[0] > starting_value
+            new_array.shift();
+        }
+
+        /* here is a problem with step value -solved in the next section
+        // after deleting all unnecessary primes, length of the new_array will be the total_primes value
+        let total_primes = new_array.length;
+        // update dom
+        document.querySelector('.totals').innerHTML = total_primes;
+        */
+
+        console.log('[Squares]-[after 1st portion deleted] ', new_array);
+
+        let innerHTML = "";
+
+        for (let i = this.input[0]; i <= this.input[1]; i += this.input[2]) {
+            // increase total_nums by one;
+            this.total_nums++;
+
+            if (!new_array.length || i < new_array[0]) {
+                /*Checking if ...
+                1. new_array is empty (means no prime left)
+                2. or if not empty check current num is less than 1st element of primes 
+                */
+
+                // insert them as normal* numbers
+                innerHTML += `<span>${i}</span>`;
+            }
+            else if (i > new_array[0]) {
+                new_array.shift();
+                // console.log('[Deleted]', new_array.shift())
+
+                innerHTML += `<span>${i}</span>`;
+            }
+            else {
+                // if i==all_primes[0] --> means its a prime number
+
+                /*as we have deleted all i > new_array[0] numbers this condition will never true */
+
+                // insert it as prime*  number
+                // and delete the 1st item(prime) of the array
+
+                innerHTML += `<span data-x>${i}</span>`;
+                new_array.shift();
+                this.needed_squares.push(i);
+            }
+        }
+        console.log('[Needed Squares]', this.needed_squares);
+
+        // after all update the counts and results in DOM
+        main_list_el.innerHTML = innerHTML;
+
+        summary_el.innerHTML = `
+            <span class="form-group">
+                <span>Total Numbers</span>
+                <input disabled class="form-field" type="text" value=${this.total_nums}>
+            </span>
+            <span class="form-group">
+                <span>Full Square Numbers</span>
+                <input disabled class="form-field" type="text" value=${this.needed_squares.length}>
+            </span>
+            <span class="form-group">
+                <span>Non Full Square Number</span>
+                <input disabled class="form-field" type="text" value=${this.total_nums - this.needed_squares.length}>
+            </span>
+            `
+        start_number_el.value = this.input[0]; //start
+        end_number_el.value = this.input[1]; //end
+
+    }
 }
 
 function main() {
@@ -222,25 +328,25 @@ function main() {
             </div>`;
 
             document.querySelector('.card--searchbox button').onclick = e => {
-                let vals= [];
+                let vals = [];
 
-                e.target.parentElement.querySelectorAll('input[type=number]').forEach(el=>{
+                e.target.parentElement.querySelectorAll('input[type=number]').forEach(el => {
                     el.value && vals.push(el.value);
                 })
-                window.location.search = window.location.search.includes('i=') ? window.location.search.split('&').map(el=> el.includes('i=') ? `i=${vals.join('-')}` : el).join('&') : window.location.search+=`&i=${vals.join('-')}`;
+                window.location.search = window.location.search.includes('i=') ? window.location.search.split('&').map(el => el.includes('i=') ? `i=${vals.join('-')}` : el).join('&') : window.location.search += `&i=${vals.join('-')}`;
             }
 
             document.getElementById('show').onchange = e => {
                 console.log('[SELECT]:', e.target.value)
-                switch(e.target.value){
-                    case '1': 
+                switch (e.target.value) {
+                    case '1':
                         document.querySelectorAll('.card__result > span').forEach(el => el.style.display = 'flex');
                         break;
-                    case '2': 
+                    case '2':
                         document.querySelectorAll('.card__result > span').forEach(el => el.style.display = 'flex');
                         document.querySelectorAll('.card__result > span:not([data-x])').forEach(el => el.style.display = 'none');
                         break;
-                    case '3': 
+                    case '3':
                         document.querySelectorAll('.card__result > span').forEach(el => el.style.display = 'flex');
                         document.querySelectorAll('.card__result > span[data-x]').forEach(el => el.style.display = 'none');
                         break;
@@ -254,9 +360,15 @@ function main() {
             let start_number_el = document.getElementById('start_number');
             let end_number_el = document.getElementById('end_number');
 
-            let obj = new PrimeFinder(INPUT);
-            obj.updateDom(main_list_el, summary_el, start_number_el, end_number_el);
-            console.dir(obj)
+            if (VIEW == 'primefinder') {
+                let obj = new PrimeFinder(INPUT);
+                obj.updateDom(main_list_el, summary_el, start_number_el, end_number_el);
+                console.dir(obj);
+            } else if (VIEW == 'fullsquare') {
+                let obj = new FullSquare(INPUT);
+                obj.updateDom(main_list_el, summary_el, start_number_el, end_number_el);
+                console.dir(obj);
+            }
         }
     } catch (e) {
         console.dir(e);
