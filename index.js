@@ -174,6 +174,50 @@ function main() {
     console.log('[INPUT]:', INPUT)
 
     try {
+        if(VIEW){
+            document.querySelector('.container').innerHTML = `
+            <div class="header">
+            <h1 style="text-transform:capitalize">${VIEW}</h4>
+        </div>
+        <div class="card card--searchbox">
+            <span class="form-group">
+                <span>Start</span>
+                <input class="form-field" id="start_number" type="number" placeholder="1" value="1">
+            </span>
+            <span class="form-group">
+                <span>End</span>
+                <input class="form-field" id="end_number" type="number" placeholder="100" value="100">
+            </span>
+            <button type="submit" class="btn pulse">Go</button>
+        </div>
+        <div class="card">
+            <h1 class="card__header">
+                <span class="card__title">Summary</span>
+            </h1>
+            <div class="card__body">
+                <span class="form-group">
+                    <span>Total Numbers</span>
+                    <input disabled class="form-field" id="total_number" type="text" placeholder="0">
+                </span>
+                <span class="form-group">
+                    <span>Prime Numbers</span>
+                    <input disabled class="form-field" id="total_prime_number" type="text" placeholder="0">
+                </span>
+                <span class="form-group">
+                    <span>Non Prime Number</span>
+                    <input disabled class="form-field" id="total_non_prime_number" type="text" placeholder="0">
+                </span>
+            </div>
+        </div>
+        <div class="card">
+            <h1 class="card__header">
+                <span class="card__title">Result</span>
+            </h1>
+            <div class="card__result">
+            </div>
+        </div>
+    </div>`
+        }
         if (INPUT){
             let main_list_el = document.querySelector('.card__result');
             let total_number_el = document.getElementById('total_number');
