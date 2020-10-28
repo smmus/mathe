@@ -1,5 +1,5 @@
 const DYNAMIC_CACHE_NAME = 'smmus-mathe-dynamic-v1';
-const ASSETS = ['index.html', 'style.css', 'index.js'];
+const ASSETS = ['./index.html', './style.css', './index.js'];
 
 // install event
 self.addEventListener('install', evt => {
@@ -54,32 +54,7 @@ self.addEventListener('fetch', evt => {
                 })
             })
             .catch(function () {
-                return caches.match(evt.request, { ignoreSearch: true });
+                return caches.match(evt.request, { 'ignoreSearch': true });
             })
     );
-
-    // evt.respondWith(
-    //     fetch(evt.request).then(fetched_response => {
-
-    //         console.log('SW : [FETCHED response]: ', fetched_response);
-
-    //         /*cache the response first and then return it*/
-    //         return caches.open(DYNAMIC_CACHE_NAME).then(cache => {
-
-    //             /**caching a copy of the response*/
-    //             cache.put(evt.request.url, fetched_response.clone());
-
-    //             return fetched_response;
-    //         })
-    //     }).catch(err => {
-    //         // offline
-    //         caches.match(evt.request, { 'ignoreSearch': true }).then(cached_response => {
-
-    //             /*if its cached already then return cache*/
-    //             if (cached_response) return cached_response;
-
-    //         })
-    //     })
-    // )
-
 });
