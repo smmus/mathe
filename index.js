@@ -355,6 +355,7 @@ function main() {
             document.querySelector('.container').innerHTML = `
             <div class="header">
                 <h1 style="text-transform:capitalize">${VIEW}</h4>
+                <a href='index.html' style='text-decoration:none'> < Main Page</a>
             </div>
             <div class="card card--searchbox">
                 <span class="form-group">
@@ -416,6 +417,8 @@ function main() {
 
             if (VIEW == 'primefactor'){
                 document.querySelector('.card--searchbox').firstElementChild.remove();
+                document.querySelector('.card--searchbox').firstElementChild.firstElementChild.innerText = 'Prime Factor of'
+                document.getElementById('show').remove();
             }
         }
         if (INPUT) {
