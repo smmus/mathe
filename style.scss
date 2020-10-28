@@ -174,7 +174,7 @@ body{
             .card__header{
                 display: flex;
                 justify-content: space-between;
-                .card_title{
+                .card__title{
                     font-weight: 500;
                     font-size: 1.5rem;
                 }
@@ -206,7 +206,7 @@ body{
                     margin-top: 10px;
                 }
             }
-            .card_result{
+            .card__result{
                 padding: 10px 0;
                 display: flex;
                 flex-wrap: wrap;
