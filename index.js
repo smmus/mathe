@@ -86,7 +86,7 @@ class CalculatePrime extends InputValidation {
             return true; // if none returns false than its a prime number
         }
     }
-}
+}``
 
 class PrimeFinder extends CalculatePrime {
 
@@ -188,10 +188,10 @@ class FullSquare extends InputValidation {
 
         let [start, end, step] = this.input;
 
-        FullSquare.calculate_squares(this.all_squares, end);
+        FullSquare.calculate_values(this.all_squares, end);
     }
 
-    static calculate_squares(all_squares, end) {
+    static calculate_values(all_squares, end) {
         // if already caculated
         if (all_squares[all_squares.length - 1] >= end) return;
 
@@ -285,6 +285,66 @@ class FullSquare extends InputValidation {
     }
 }
 
+class PrimeFactor extends CalculatePrime{
+    constructor(input){
+        super(input);
+
+        this.result = {};
+        this.input = this.input[1];
+        this.primeFactor();
+    }
+
+    primeFactor(){
+        // input must be integer
+        //if(!Number.isInteger(num)) return; //raise error
+    
+        // all primes 2-->num
+        let index = 0; //for iterating the list
+        let num = this.input;
+    
+        while(num!==1){
+            let prime = this.all_primes[index]; // local var
+    
+            // divide num by primes only if it is divisible
+            if(! (num % prime)){ //if num%prime==0
+                //if divisible then divide
+                num = num / prime; 
+                
+                // and record it to the this.result
+                if(this.result[prime] == undefined){
+                    this.result[prime] = 1;
+                }else{
+                    this.result[prime] += 1;
+                }
+            }else{
+                index++;
+            }
+        }
+    }
+
+    updateDom(main_list_el, summary_el, end_number_el){
+        let main_list_innerHTML = ``;
+        let summary_innerHTML = ``;
+        
+        for(let key in this.result){
+            
+            for(let i = this.result[key]; i > 0; i--){
+                main_list_innerHTML += `<span>${key}</span>`;
+            } 
+
+            summary_innerHTML += `
+                <span class="form-group">
+                    <span>${key}</span>
+                    <input disabled class="form-field" type="text" value=${this.result[key]}>
+                </span>`;
+        }
+
+        main_list_el.innerHTML = main_list_innerHTML;
+        summary_el.innerHTML = summary_innerHTML;
+        end_number_el.value = this.input
+    }
+}
+
 function main() {
     const VIEW = new URLSearchParams(window.location.search).get('v');
     const INPUT = new URLSearchParams(window.location.search).get('i');
@@ -353,6 +413,10 @@ function main() {
 
                 }
             }
+
+            if (VIEW == 'primefactor'){
+                document.querySelector('.card--searchbox').firstElementChild.remove();
+            }
         }
         if (INPUT) {
             let main_list_el = document.querySelector('.card__result');
@@ -367,6 +431,10 @@ function main() {
             } else if (VIEW == 'fullsquare') {
                 let obj = new FullSquare(INPUT);
                 obj.updateDom(main_list_el, summary_el, start_number_el, end_number_el);
+                console.dir(obj);
+            } else if (VIEW == 'primefactor') {
+                let obj = new PrimeFactor(INPUT);
+                obj.updateDom(main_list_el, summary_el, end_number_el);
                 console.dir(obj);
             }
         }
