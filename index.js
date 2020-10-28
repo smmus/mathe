@@ -99,7 +99,7 @@ class PrimeFinder extends CalculatePrime {
         [this.start, this.end, this.step] = this.input
     }
 
-    updateDom(main_list) {
+    updateDom(main_list_element, total_num_el, total_prime_num_el, total_non_prime_num_el, start_number_el, end_number_el) {
 
         let new_array = this.all_primes.slice(); // all_primes not empty here
         //copying array for efficiency (there are several methods for copying an array)
@@ -158,9 +158,12 @@ class PrimeFinder extends CalculatePrime {
         console.log('[Needed Primes]', this.needed_primes);
 
         // after all update the counts and results in DOM
-        main_list.innerHTML = innerHTML;
-        // document.querySelector('.primes').innerHTML = this.needed_primes.length;
-        // document.querySelector('.notPrimes').innerHTML = total_nums - this.needed_primes.length;
+        main_list_element.innerHTML = innerHTML;
+        total_num_el.value = this.total_nums; 
+        total_prime_num_el.value = this.needed_primes.length; 
+        total_non_prime_num_el.value = this.total_nums - this.needed_primes.length;
+        start_number_el.value = this.start;
+        end_number_el.value = this.end;
     }
 
 }
@@ -172,9 +175,15 @@ function main() {
 
     try {
         if (INPUT){
-            let main_list = document.querySelector('.card__result');
+            let main_list_el = document.querySelector('.card__result');
+            let total_number_el = document.getElementById('total_number');
+            let total_prime_number_el = document.getElementById('total_prime_number');
+            let total_non_prime_number_el = document.getElementById('total_non_prime_number');
+            let start_number_el = document.getElementById('start_number');
+            let end_number_el = document.getElementById('end_number');
+
             let obj = new PrimeFinder(INPUT);
-            obj.updateDom(main_list);
+            obj.updateDom(main_list_el, total_number_el, total_prime_number_el, total_non_prime_number_el, start_number_el, end_number_el);
             console.dir(obj)
         }
     } catch (e) {
