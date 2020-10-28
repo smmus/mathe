@@ -99,7 +99,7 @@ class PrimeFinder extends CalculatePrime {
         [this.start, this.end, this.step] = this.input
     }
 
-    updateDom(main_list_element, total_num_el, total_prime_num_el, total_non_prime_num_el, start_number_el, end_number_el) {
+    updateDom(main_list_element, summary_el, start_number_el, end_number_el) {
 
         let new_array = this.all_primes.slice(); // all_primes not empty here
         //copying array for efficiency (there are several methods for copying an array)
@@ -159,9 +159,20 @@ class PrimeFinder extends CalculatePrime {
 
         // after all update the counts and results in DOM
         main_list_element.innerHTML = innerHTML;
-        total_num_el.value = this.total_nums;
-        total_prime_num_el.value = this.needed_primes.length;
-        total_non_prime_num_el.value = this.total_nums - this.needed_primes.length;
+        summary_el.innerHTML = `
+        <span class="form-group">
+            <span>Total Numbers</span>
+            <input disabled class="form-field" type="text" value=${this.total_nums}>
+        </span>
+        <span class="form-group">
+            <span>Prime Numbers</span>
+            <input disabled class="form-field" type="text" value=${this.needed_primes.length}>
+        </span>
+        <span class="form-group">
+            <span>Non Prime Number</span>
+            <input disabled class="form-field" type="text" value=${this.total_nums - this.needed_primes.length}>
+        </span>
+        `
         start_number_el.value = this.start;
         end_number_el.value = this.end;
     }
@@ -194,19 +205,7 @@ function main() {
                 <h1 class="card__header">
                     <span class="card__title">Summary</span>
                 </h1>
-                <div class="card__body">
-                    <span class="form-group">
-                        <span>Total Numbers</span>
-                        <input disabled class="form-field" id="total_number" type="text" placeholder="0">
-                    </span>
-                    <span class="form-group">
-                        <span>Prime Numbers</span>
-                        <input disabled class="form-field" id="total_prime_number" type="text" placeholder="0">
-                    </span>
-                    <span class="form-group">
-                        <span>Non Prime Number</span>
-                        <input disabled class="form-field" id="total_non_prime_number" type="text" placeholder="0">
-                    </span>
+                <div class="card__body" id='summary'>
                 </div>
             </div>
             <div class="card">
@@ -221,6 +220,15 @@ function main() {
                 <div class="card__result">
                 </div>
             </div>`;
+
+            document.querySelector('.card--searchbox button').onclick = e => {
+                let vals= [];
+
+                e.target.parentElement.querySelectorAll('input[type=number]').forEach(el=>{
+                    el.value && vals.push(el.value);
+                })
+                window.location.search = window.location.search.includes('i=') ? window.location.search.split('&').map(el=> el.includes('i=') ? `i=${vals.join('-')}` : el).join('&') : window.location.search+=`&i=${vals.join('-')}`;
+            }
 
             document.getElementById('show').onchange = e => {
                 console.log('[SELECT]:', e.target.value)
@@ -242,14 +250,12 @@ function main() {
         }
         if (INPUT) {
             let main_list_el = document.querySelector('.card__result');
-            let total_number_el = document.getElementById('total_number');
-            let total_prime_number_el = document.getElementById('total_prime_number');
-            let total_non_prime_number_el = document.getElementById('total_non_prime_number');
+            let summary_el = document.getElementById('summary');
             let start_number_el = document.getElementById('start_number');
             let end_number_el = document.getElementById('end_number');
 
             let obj = new PrimeFinder(INPUT);
-            obj.updateDom(main_list_el, total_number_el, total_prime_number_el, total_non_prime_number_el, start_number_el, end_number_el);
+            obj.updateDom(main_list_el, summary_el, start_number_el, end_number_el);
             console.dir(obj)
         }
     } catch (e) {
