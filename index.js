@@ -1,22 +1,22 @@
-class InputValidation{
-    constructor(input_string){
+class InputValidation {
+    constructor(input_string) {
         //100
         //1-100
         //1-100-10
         this.input = [];
 
         let input = input_string.split('-').map(e => parseInt(e));
-        if(input.length === 0) throw new Error('[NO INPUT]');
-        if(input.length === 1) this.input = [1, input[0], 1];
-        else if(input.length === 2) this.input = [...input , 1];
-        else if(input.length === 3) this.input = input;
+        if (input.length === 0) throw new Error('[NO INPUT]');
+        if (input.length === 1) this.input = [1, input[0], 1];
+        else if (input.length === 2) this.input = [...input, 1];
+        else if (input.length === 3) this.input = input;
         else throw new Error('[INVALID INPUT]');
 
         console.log('[INPUT:InputValidation]', this.input)
     }
 }
 
-class CalculatePrime extends InputValidation{
+class CalculatePrime extends InputValidation {
     constructor(input_string) {
         super(input_string);
 
@@ -36,7 +36,7 @@ class CalculatePrime extends InputValidation{
         }
     }
 
-    static isAllPrime(end,  all_primes) {
+    static isAllPrime(end, all_primes) {
         /* This func calculate all primes and mutate the object's all_primes property + set new calculated values in local storage*/
 
         let starting_point = 1; //calculation will be started form this val
@@ -159,8 +159,8 @@ class PrimeFinder extends CalculatePrime {
 
         // after all update the counts and results in DOM
         main_list_element.innerHTML = innerHTML;
-        total_num_el.value = this.total_nums; 
-        total_prime_num_el.value = this.needed_primes.length; 
+        total_num_el.value = this.total_nums;
+        total_prime_num_el.value = this.needed_primes.length;
         total_non_prime_num_el.value = this.total_nums - this.needed_primes.length;
         start_number_el.value = this.start;
         end_number_el.value = this.end;
@@ -174,51 +174,73 @@ function main() {
     console.log('[INPUT]:', INPUT)
 
     try {
-        if(VIEW){
+        if (VIEW) {
             document.querySelector('.container').innerHTML = `
             <div class="header">
-            <h1 style="text-transform:capitalize">${VIEW}</h4>
-        </div>
-        <div class="card card--searchbox">
-            <span class="form-group">
-                <span>Start</span>
-                <input class="form-field" id="start_number" type="number" placeholder="1" value="1">
-            </span>
-            <span class="form-group">
-                <span>End</span>
-                <input class="form-field" id="end_number" type="number" placeholder="100" value="100">
-            </span>
-            <button type="submit" class="btn pulse">Go</button>
-        </div>
-        <div class="card">
-            <h1 class="card__header">
-                <span class="card__title">Summary</span>
-            </h1>
-            <div class="card__body">
-                <span class="form-group">
-                    <span>Total Numbers</span>
-                    <input disabled class="form-field" id="total_number" type="text" placeholder="0">
-                </span>
-                <span class="form-group">
-                    <span>Prime Numbers</span>
-                    <input disabled class="form-field" id="total_prime_number" type="text" placeholder="0">
-                </span>
-                <span class="form-group">
-                    <span>Non Prime Number</span>
-                    <input disabled class="form-field" id="total_non_prime_number" type="text" placeholder="0">
-                </span>
+                <h1 style="text-transform:capitalize">${VIEW}</h4>
             </div>
-        </div>
-        <div class="card">
-            <h1 class="card__header">
-                <span class="card__title">Result</span>
-            </h1>
-            <div class="card__result">
+            <div class="card card--searchbox">
+                <span class="form-group">
+                    <span>Start</span>
+                    <input class="form-field" id="start_number" type="number" placeholder="1" value="1">
+                </span>
+                <span class="form-group">
+                    <span>End</span>
+                    <input class="form-field" id="end_number" type="number" placeholder="100" value="100">
+                </span>
+                <button type="submit" class="btn pulse">Go</button>
             </div>
-        </div>
-    </div>`
+            <div class="card">
+                <h1 class="card__header">
+                    <span class="card__title">Summary</span>
+                </h1>
+                <div class="card__body">
+                    <span class="form-group">
+                        <span>Total Numbers</span>
+                        <input disabled class="form-field" id="total_number" type="text" placeholder="0">
+                    </span>
+                    <span class="form-group">
+                        <span>Prime Numbers</span>
+                        <input disabled class="form-field" id="total_prime_number" type="text" placeholder="0">
+                    </span>
+                    <span class="form-group">
+                        <span>Non Prime Number</span>
+                        <input disabled class="form-field" id="total_non_prime_number" type="text" placeholder="0">
+                    </span>
+                </div>
+            </div>
+            <div class="card">
+                <h1 class="card__header">
+                    <span class="card__title">Result</span>
+                    <select id='show'>
+                        <option value=1 selected>Show All</option>
+                        <option value=2>Show Only</option>
+                        <option value=3>Show Except</option>
+                    </select>
+                </h1>
+                <div class="card__result">
+                </div>
+            </div>`;
+
+            document.getElementById('show').onchange = e => {
+                console.log('[SELECT]:', e.target.value)
+                switch(e.target.value){
+                    case '1': 
+                        document.querySelectorAll('.card__result > span').forEach(el => el.style.display = 'flex');
+                        break;
+                    case '2': 
+                        document.querySelectorAll('.card__result > span').forEach(el => el.style.display = 'flex');
+                        document.querySelectorAll('.card__result > span:not([data-x])').forEach(el => el.style.display = 'none');
+                        break;
+                    case '3': 
+                        document.querySelectorAll('.card__result > span').forEach(el => el.style.display = 'flex');
+                        document.querySelectorAll('.card__result > span[data-x]').forEach(el => el.style.display = 'none');
+                        break;
+
+                }
+            }
         }
-        if (INPUT){
+        if (INPUT) {
             let main_list_el = document.querySelector('.card__result');
             let total_number_el = document.getElementById('total_number');
             let total_prime_number_el = document.getElementById('total_prime_number');

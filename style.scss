@@ -31,7 +31,7 @@ html,body{
     text-transform: uppercase;
     color: #000;
     background: #00c6ff;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);  /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);  
     background: linear-gradient(to right, #0072ff, #00c6ff);
     border: none;
     border-radius: 6px;
@@ -46,7 +46,7 @@ html,body{
 .pulse {
     animation: pulse 1s infinite;
   //   box-shadow: 0 0 0 2em rgba(#000,0);
-  }
+}
   
 @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(0,0,0,.6); }
@@ -60,9 +60,9 @@ input{
 .form-field {
     display: block;
     width: 100%;
-    padding: 8px 16px;
-    line-height: 25px;
-    font-size: 14px;
+    padding: .5rem 1rem;
+    line-height: 1.5rem;
+    font-size: .9rem;
     font-weight: 500;
     font-family: inherit;
     border-radius: 6px;
@@ -111,9 +111,9 @@ input{
     }
     & > span {
         text-align: center;
-        padding: 8px 12px;
-        font-size: 14px;
-        line-height: 25px;
+        padding: .5rem .8rem;
+        font-size: .9rem;
+        line-height: 1.5rem;
         color: var(--group-color);
         background: var(--group-background);
         border: 1px solid var(--group-border);
@@ -256,6 +256,9 @@ body{
 @media (max-width:760px){
     html{
         font-size: 10px;
+    }
+    body{
+        background-size: 100vw 30vh;
     }
     .container{
         width: 90%;
